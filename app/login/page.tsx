@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link'
+import { useRouter } from "next/navigation";
 import { login } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -6,6 +9,14 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    // No credential check, just redirect (for now)
+    router.push("/dashboard");
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
@@ -15,7 +26,8 @@ export default function LoginPage() {
             Enter your email and password to sign in to your account
           </CardDescription>
         </CardHeader>
-        <form action={login}>
+        <form onSubmit={handleSubmit}> 
+          {/* Will eventually use the login action when DB is init */}
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
