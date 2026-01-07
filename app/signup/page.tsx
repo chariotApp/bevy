@@ -14,7 +14,7 @@ export default function SignupPage() {
   const [address, setAddress] = useState("");
 
   const router = useRouter();
-  const supabase = createClient(); // get the client
+  const supabase = createClient(); // get Supabase client
 
   const handleSignup = async () => {
     // Basic validation
@@ -23,7 +23,8 @@ export default function SignupPage() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
+    // 1️⃣ Sign up in Supabase Auth
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -36,12 +37,36 @@ export default function SignupPage() {
       },
     });
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Signup successful! Check your email to confirm your account.");
-      router.push("/login");
+    if (signUpError) {
+      alert(signUpError.message);
+      return;
     }
+
+    const userId = signUpData.user?.id;
+    if (!userId) {
+      alert("Something went wrong. No user ID returned.");
+      return;
+    }
+
+    // 2️⃣ Insert profile in profiles table
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .insert({
+        id: userId, // link profile to auth user
+        full_name: name,
+        display_name: name,
+        phone: phone,
+      });
+
+    if (profileError) {
+      console.error("Error creating profile:", profileError);
+      alert("Signup succeeded but profile creation failed.");
+      return;
+    }
+
+    // Success
+    alert("Signup successful! Check your email to confirm your account.");
+    router.push("/login");
   };
 
   return (
