@@ -11,7 +11,7 @@ type AdminSidebarProps = {
 
 export default function AdminSidebar({
   organizationId,
-  iconColor = "#6b46c1",
+  iconColor = "#00BFFF",
   borderColor = "#e5e7eb",
 }: AdminSidebarProps) {
   const router = useRouter();

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 import Image from "next/image";
-import logo from "../Public/Logo.png";
+import logo from "../Public/BlueLogo.png";
 import profileIcon from "../Public/profile.png";
 
 type Org = {
