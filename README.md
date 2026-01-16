@@ -1,3 +1,12 @@
+## Development Steps
+1. Database schema - Create tables in Supabase
+2. Authentication - Sign up/login pages
+3. Organization onboarding - Create a club flow
+4. Member roster - Add/view members
+5. Dues structure - Set up payment amounts
+6. Payment flow - Stripe checkout
+7. Dashboard - Show who paid
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
