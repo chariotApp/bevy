@@ -1,18 +1,14 @@
-
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const supabase = createClient(); // call the function to get a client
-
+  const supabase = createClient();
 
   const signIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -27,94 +23,81 @@ export default function LoginPage() {
   };
 
   const signUp = () => {
-    router.push("/signup"); // your new signup page route
+    router.push("/signup");
   };
 
   return (
-    <div
-      style={{
-        minHeight: "85vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        paddingTop: "12vh",
-        backgroundColor: "#f7f7f7",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "400px",
-          padding: "2rem",
-          borderRadius: "8px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          backgroundColor: "#fff",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          flexShrink: 0,          // prevents the form from stretching
-        }}
-      >
-        <h1 style={{ textAlign: "center", marginBottom: "1rem", fontWeight: 500 }}>Login</h1>
+    <div className="min-h-screen bg-gradient-to-br from-[#448bfc] via-[#2563eb] to-[#1e40af] flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        {/* Bevy Logo */}
+        <div className="text-center mb-8">
+          <h1 className="text-6xl font-extrabold text-white mb-2 tracking-tight">
+            Bevy
+          </h1>
+          <div className="h-2 bg-gradient-to-r from-[#60a5fa] to-[#93c5fd] rounded-full w-32 mx-auto"></div>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            fontSize: "1rem",
-          }}
-        />
+        {/* Login Card */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 space-y-6">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
+            <p className="text-gray-600">Sign in to your account</p>
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            fontSize: "1rem",
-          }}
-        />
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#448bfc] focus:outline-none transition-colors text-gray-900"
+              />
+            </div>
 
-        <button
-          onClick={signIn}
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "none",
-            backgroundColor: "#7c57d1",
-            color: "#fff",
-            fontWeight: 600,
-            cursor: "pointer",
-            fontSize: "1rem",
-          }}
-        >
-          Sign In
-        </button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#448bfc] focus:outline-none transition-colors text-gray-900"
+              />
+            </div>
+          </div>
 
-        <button
-          onClick={signUp}
-          style={{
-            padding: "0.75rem",
-            borderRadius: "6px",
-            border: "1px solid #7c57d1",
-            backgroundColor: "#fff",
-            color: "#7c57d1",
-            fontWeight: 600,
-            cursor: "pointer",
-            fontSize: "1rem",
-          }}
-        >
-          Sign Up
-        </button>
+          <div className="space-y-3 pt-2">
+            <button
+              onClick={signIn}
+              className="w-full bg-gradient-to-r from-[#448bfc] to-[#2563eb] text-white py-3 rounded-lg font-semibold hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+            >
+              Sign In
+            </button>
+
+            <button
+              onClick={signUp}
+              className="w-full border-2 border-[#448bfc] text-[#448bfc] py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+            >
+              Create Account
+            </button>
+          </div>
+
+          <div className="text-center pt-4">
+            <a href="#" className="text-sm text-[#448bfc] hover:underline">
+              Forgot your password?
+            </a>
+          </div>
+        </div>
+
+        <p className="text-center text-blue-100 text-sm mt-6">
+          Secure payments powered by Stripe
+        </p>
       </div>
     </div>
   );

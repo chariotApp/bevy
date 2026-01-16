@@ -67,92 +67,198 @@ export default function OrganizationsPage() {
   }
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "2rem",
-        }}
-      >
-        <h1 style={{ fontSize: "2rem", fontWeight: 600 }}>
-          Organizations
-        </h1>
-
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <Button
-            variant="outline"
-            onClick={() => router.push("/organizations/join")}
-          >
-            Join Organization
-          </Button>
-
-          <Button
-            onClick={() => router.push("/organizations/create")}
-          >
-            Create Organization
-          </Button>
-        </div>
-      </div>
-
-      {/* Empty state */}
-      {organizations.length === 0 ? (
-        <p style={{ color: "#666" }}>
-          You are not part of any organizations yet.
-        </p>
-      ) : (
+    <div style={{ 
+      minHeight: "100vh",
+      background: "linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)",
+      padding: "3rem 2rem"
+    }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {/* Header */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-            gap: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "3rem",
           }}
         >
-          {organizations.map((org) => (
-            <div
-              key={org.id}
-              onClick={() => router.push(`/organizations/${org.id}`)}
+          <div>
+            <h1 style={{ 
+              fontSize: "2.5rem", 
+              fontWeight: 700,
+              color: "#1e293b",
+              marginBottom: "0.5rem"
+            }}>
+              Your Organizations
+            </h1>
+            <p style={{ color: "#64748b", fontSize: "1rem" }}>
+              Manage and access your workspaces
+            </p>
+          </div>
+
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            <Button
+              variant="outline"
+              onClick={() => router.push("/organizations/join")}
               style={{
-                padding: "1.25rem",
-                border: "1px solid #ddd",
+                borderColor: "#448bfc",
+                color: "#448bfc",
+                backgroundColor: "white",
+                fontWeight: 500,
+                padding: "0.625rem 1.25rem",
                 borderRadius: "8px",
-                cursor: "pointer",
-                backgroundColor: "#fff",
-                position: "relative",
+                transition: "all 0.2s"
               }}
             >
-              {/* Role badge */}
-              <span
+              Join Organization
+            </Button>
+
+            <Button
+              onClick={() => router.push("/organizations/create")}
+              style={{
+                backgroundColor: "#448bfc",
+                color: "white",
+                fontWeight: 500,
+                padding: "0.625rem 1.25rem",
+                borderRadius: "8px",
+                border: "none",
+                transition: "all 0.2s",
+                boxShadow: "0 4px 12px rgba(68, 139, 252, 0.3)"
+              }}
+            >
+              Create Organization
+            </Button>
+          </div>
+        </div>
+
+        {/* Empty state */}
+        {organizations.length === 0 ? (
+          <div style={{
+            backgroundColor: "white",
+            padding: "4rem 2rem",
+            borderRadius: "16px",
+            textAlign: "center",
+            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)"
+          }}>
+            <div style={{
+              width: "64px",
+              height: "64px",
+              backgroundColor: "#eff6ff",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 1.5rem",
+              color: "#448bfc",
+              fontSize: "2rem"
+            }}>
+              🏢
+            </div>
+            <p style={{ 
+              color: "#64748b",
+              fontSize: "1.125rem",
+              marginBottom: "0.5rem"
+            }}>
+              You're not part of any organizations yet
+            </p>
+            <p style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
+              Create a new organization or join an existing one to get started
+            </p>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "1.5rem",
+            }}
+          >
+            {organizations.map((org) => (
+              <div
+                key={org.id}
+                onClick={() => router.push(`/organizations/${org.id}`)}
                 style={{
-                  position: "absolute",
-                  top: "12px",
-                  right: "12px",
-                  fontSize: "0.7rem",
-                  padding: "0.25rem 0.6rem",
-                  borderRadius: "999px",
-                  backgroundColor:
-                    org.role === "admin" ? "#6b46c1" : "#e5e7eb",
-                  color: org.role === "admin" ? "#fff" : "#374151",
-                  textTransform: "capitalize",
-                  fontWeight: 500,
+                  padding: "1.75rem",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  backgroundColor: "#fff",
+                  position: "relative",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 12px 24px rgba(68, 139, 252, 0.15)";
+                  e.currentTarget.style.borderColor = "#448bfc";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.05)";
+                  e.currentTarget.style.borderColor = "#e2e8f0";
                 }}
               >
-                {org.role}
-              </span>
+                {/* Role badge */}
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "16px",
+                    right: "16px",
+                    fontSize: "0.75rem",
+                    padding: "0.375rem 0.75rem",
+                    borderRadius: "6px",
+                    backgroundColor:
+                      org.role === "admin" ? "#448bfc" : "#f1f5f9",
+                    color: org.role === "admin" ? "#fff" : "#64748b",
+                    textTransform: "capitalize",
+                    fontWeight: 600,
+                    letterSpacing: "0.025em"
+                  }}
+                >
+                  {org.role}
+                </span>
 
-              <h2 style={{ fontSize: "1.2rem", fontWeight: 500 }}>
-                {org.name}
-              </h2>
+                <div style={{
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "#eff6ff",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "1rem",
+                  color: "#448bfc",
+                  fontSize: "1.5rem",
+                  fontWeight: 600
+                }}>
+                  {org.name.charAt(0).toUpperCase()}
+                </div>
 
-              <p style={{ fontSize: "0.85rem", color: "#666" }}>
-                Created {new Date(org.created_at).toLocaleDateString()}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+                <h2 style={{ 
+                  fontSize: "1.25rem", 
+                  fontWeight: 600,
+                  color: "#1e293b",
+                  marginBottom: "0.5rem",
+                  marginRight: "4rem"
+                }}>
+                  {org.name}
+                </h2>
+
+                <p style={{ 
+                  fontSize: "0.875rem", 
+                  color: "#94a3b8",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.375rem"
+                }}>
+                  <span>📅</span>
+                  Created {new Date(org.created_at).toLocaleDateString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
