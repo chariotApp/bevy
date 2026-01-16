@@ -2,35 +2,34 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Users, Settings, DollarSign } from "lucide-react";
 
 type AdminSidebarProps = {
   organizationId: string;
-  iconColor?: string; // optional prop to customize icon color
-  borderColor?: string; // optional prop for the right border
+  borderColor?: string;
 };
 
 export default function AdminSidebar({
   organizationId,
-  iconColor = "#00BFFF",
   borderColor = "#e5e7eb",
 }: AdminSidebarProps) {
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
 
-  const navbarHeight = 64; // adjust if your navbar height changes
+  const navbarHeight = 64;
   const collapsedWidth = 55;
   const expandedWidth = 180;
 
   const menuItems = [
-    { title: "Members", icon: "👥", path: `/organizations/${organizationId}` },
+    { title: "Members", icon: Users, path: `/organizations/${organizationId}` },
     {
       title: "Settings",
-      icon: "⚙️",
+      icon: Settings,
       path: `/organizations/${organizationId}/settings`,
     },
     {
-      title: "Treasury",
-      icon: "💳",
+      title: "Finances",
+      icon: DollarSign,
       path: `/organizations/${organizationId}/treasury`,
     },
   ];
@@ -58,40 +57,44 @@ export default function AdminSidebar({
         overflow: "hidden",
       }}
     >
-      {menuItems.map((item) => (
-        <button
-          key={item.title}
-          title={item.title}
-          onClick={() => router.push(item.path)}
-          style={{
-            ...iconButtonStyle,
-            color: iconColor,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: hovered ? "flex-start" : "center",
-            gap: hovered ? "0.75rem" : "0",
-            width: "100%",
-            paddingLeft: hovered ? "0.75rem" : "0",
-          }}
-        >
-          <span style={{ fontSize: "1.4rem" }}>{item.icon}</span>
-          {hovered && (
-            <span style={{ fontWeight: 500, whiteSpace: "nowrap" }}>
-              {item.title}
-            </span>
-          )}
-        </button>
-      ))}
+      {menuItems.map((item) => {
+        const Icon = item.icon;
+        return (
+          <button
+            key={item.title}
+            title={item.title}
+            onClick={() => router.push(item.path)}
+            style={{
+              width: "100%",
+              height: "44px",
+              borderRadius: "12px",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: hovered ? "flex-start" : "center",
+              gap: hovered ? "0.75rem" : "0",
+              paddingLeft: hovered ? "0.75rem" : "0",
+              color: "#000000",
+              transition: "background-color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#f3f4f6";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
+          >
+            <Icon size={22} strokeWidth={2} />
+            {hovered && (
+              <span style={{ fontWeight: 500, whiteSpace: "nowrap", fontSize: "0.95rem" }}>
+                {item.title}
+              </span>
+            )}
+          </button>
+        );
+      })}
     </aside>
   );
 }
-
-const iconButtonStyle: React.CSSProperties = {
-  width: "100%",
-  height: "44px",
-  borderRadius: "12px",
-  background: "none",
-  border: "none",
-  fontSize: "1.4rem",
-  cursor: "pointer",
-};
