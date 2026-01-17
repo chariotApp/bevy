@@ -13,7 +13,7 @@ type Org = {
   name: string;
 };
 
-export default function Navigationbar() {
+export default function Navigationbar({ orgName }: { orgName?: string }) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -21,6 +21,9 @@ export default function Navigationbar() {
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [orgDropdownOpen, setOrgDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  // Timeout refs for dropdowns
+  let orgDropdownTimeout: NodeJS.Timeout | null = null;
+  let profileDropdownTimeout: NodeJS.Timeout | null = null;
 
   useEffect(() => {
     const fetchProfileAndOrgs = async () => {
@@ -74,6 +77,16 @@ export default function Navigationbar() {
         <span style={{ fontWeight: 500, fontSize: "1.4rem", fontFamily: "revert" }}>
           Bevy
         </span>
+        {orgName && (
+          <span style={{
+            marginLeft: "1rem",
+            fontWeight: 600,
+            fontSize: "1.2rem",
+            color: "#2563eb"
+          }}>
+            {orgName}
+          </span>
+        )}
       </div>
 
       {/* RIGHT */}
@@ -89,8 +102,13 @@ export default function Navigationbar() {
         {/* Organizations */}
         <div
           style={{ position: "relative" }}
-          onMouseEnter={() => setOrgDropdownOpen(true)}
-          onMouseLeave={() => setOrgDropdownOpen(false)}
+          onMouseEnter={() => {
+            if (orgDropdownTimeout) clearTimeout(orgDropdownTimeout);
+            setOrgDropdownOpen(true);
+          }}
+          onMouseLeave={() => {
+            orgDropdownTimeout = setTimeout(() => setOrgDropdownOpen(false), 200);
+          }}
         >
           <button
             onClick={() => router.push("/organizations")}
@@ -167,8 +185,13 @@ export default function Navigationbar() {
         {/* Profile */}
         <div
           style={{ position: "relative" }}
-          onMouseEnter={() => setProfileDropdownOpen(true)}
-          onMouseLeave={() => setProfileDropdownOpen(false)}
+          onMouseEnter={() => {
+            if (profileDropdownTimeout) clearTimeout(profileDropdownTimeout);
+            setProfileDropdownOpen(true);
+          }}
+          onMouseLeave={() => {
+            profileDropdownTimeout = setTimeout(() => setProfileDropdownOpen(false), 200);
+          }}
         >
           {/* CLICKABLE ICON */}
           <div

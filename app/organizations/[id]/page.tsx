@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import AdminSidebar from "@/components/AdminSidebar";
 
+
 type Member = {
   id: string;
   membership_id: string;
@@ -320,7 +321,7 @@ export default function OrganizationPage() {
           marginLeft: isAdmin ? "72px" : "0",
         }}
       >
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           {/* Header */}
           <div
             style={{

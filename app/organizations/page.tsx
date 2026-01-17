@@ -264,4 +264,5 @@ export default function OrganizationsPage() {
       )}
     </div>
   );
-}
+  </div>
+)}
