@@ -40,6 +40,13 @@ export default function OrganizationPage() {
     newClass: string;
     newClassName: string;
   } | null>(null);
+  const [roleChangeDialog, setRoleChangeDialog] = useState<{
+    show: boolean;
+    membershipId: string;
+    memberName: string;
+    currentRole: string;
+    newRole: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchOrganization = async () => {
@@ -157,6 +164,45 @@ export default function OrganizationPage() {
     setConfirmDialog(null);
   };
 
+  const handleRoleChange = (
+    membershipId: string,
+    memberName: string,
+    currentRole: string
+  ) => {
+    const newRole = currentRole === "admin" ? "member" : "admin";
+    setRoleChangeDialog({
+      show: true,
+      membershipId,
+      memberName,
+      currentRole,
+      newRole,
+    });
+  };
+
+  const confirmRoleChange = async () => {
+    if (!roleChangeDialog) return;
+
+    const { error } = await supabase
+      .from("organization_memberships")
+      .update({ role: roleChangeDialog.newRole })
+      .eq("id", roleChangeDialog.membershipId);
+
+    if (error) {
+      console.error("Error updating role:", error);
+      alert("Failed to update member role");
+    } else {
+      setMembers((prev) =>
+        prev.map((m) =>
+          m.membership_id === roleChangeDialog.membershipId
+            ? { ...m, role: roleChangeDialog.newRole }
+            : m
+        )
+      );
+    }
+
+    setRoleChangeDialog(null);
+  };
+
   const getPaymentClassDisplay = (className: string) => {
     const pc = paymentClasses.find((p) => p.class_name === className);
     return pc?.display_name || className;
@@ -193,7 +239,7 @@ export default function OrganizationPage() {
 
   return (
     <>
-      {/* Confirmation Dialog */}
+      {/* Payment Class Confirmation Dialog */}
       {confirmDialog && confirmDialog.show && (
         <div
           style={{
@@ -308,6 +354,142 @@ export default function OrganizationPage() {
         </div>
       )}
 
+      {/* Role Change Confirmation Dialog */}
+      {roleChangeDialog && roleChangeDialog.show && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            animation: "fadeIn 0.2s ease-out"
+          }}
+          onClick={() => setRoleChangeDialog(null)}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "2rem",
+              borderRadius: "16px",
+              maxWidth: "440px",
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)",
+              animation: "slideUp 0.3s ease-out"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{
+              width: "48px",
+              height: "48px",
+              backgroundColor: roleChangeDialog.newRole === "admin" ? "#fef3c7" : "#fee2e2",
+              borderRadius: "12px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "1.25rem",
+              color: roleChangeDialog.newRole === "admin" ? "#f59e0b" : "#ef4444",
+              fontSize: "1.5rem",
+              fontWeight: 700
+            }}>
+              {roleChangeDialog.newRole === "admin" ? "⬆" : "⬇"}
+            </div>
+            <h2 style={{ 
+              fontSize: "1.5rem", 
+              fontWeight: 700, 
+              marginBottom: "0.75rem",
+              color: "#1e293b"
+            }}>
+              Change Member Role
+            </h2>
+            <p style={{ 
+              color: "#64748b", 
+              marginBottom: "1.5rem",
+              lineHeight: "1.6"
+            }}>
+              Are you sure you want to change <strong style={{ color: "#1e293b" }}>{roleChangeDialog.memberName}</strong>'s
+              role from <strong style={{ color: "#64748b" }}>{roleChangeDialog.currentRole}</strong> to{" "}
+              <strong style={{ 
+                color: roleChangeDialog.newRole === "admin" ? "#f59e0b" : "#448bfc" 
+              }}>
+                {roleChangeDialog.newRole}
+              </strong>?
+            </p>
+            {roleChangeDialog.newRole === "admin" && (
+              <div style={{
+                backgroundColor: "#fef3c7",
+                border: "1px solid #fde68a",
+                borderRadius: "8px",
+                padding: "0.75rem",
+                marginBottom: "1.5rem"
+              }}>
+                <p style={{ 
+                  color: "#92400e", 
+                  fontSize: "0.875rem",
+                  lineHeight: "1.5"
+                }}>
+                  ⚠️ Admins can manage members, payment classes, and organization settings.
+                </p>
+              </div>
+            )}
+            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setRoleChangeDialog(null)}
+                style={{
+                  padding: "0.625rem 1.25rem",
+                  borderRadius: "8px",
+                  border: "1px solid #e2e8f0",
+                  backgroundColor: "white",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                  color: "#64748b",
+                  transition: "all 0.2s"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#f8fafc";
+                  e.currentTarget.style.borderColor = "#cbd5e1";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "white";
+                  e.currentTarget.style.borderColor = "#e2e8f0";
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmRoleChange}
+                style={{
+                  padding: "0.625rem 1.25rem",
+                  borderRadius: "8px",
+                  border: "none",
+                  backgroundColor: roleChangeDialog.newRole === "admin" ? "#f59e0b" : "#448bfc",
+                  color: "white",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                  transition: "all 0.2s",
+                  boxShadow: `0 2px 8px ${roleChangeDialog.newRole === "admin" ? "rgba(245, 158, 11, 0.3)" : "rgba(68, 139, 252, 0.3)"}`
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = `0 4px 12px ${roleChangeDialog.newRole === "admin" ? "rgba(245, 158, 11, 0.4)" : "rgba(68, 139, 252, 0.4)"}`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = `0 2px 8px ${roleChangeDialog.newRole === "admin" ? "rgba(245, 158, 11, 0.3)" : "rgba(68, 139, 252, 0.3)"}`;
+                }}
+              >
+                Confirm Change
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Page Content */}
       <div
         style={{
@@ -393,8 +575,9 @@ export default function OrganizationPage() {
               letterSpacing: "0.05em"
             }}>
               <span style={{ flex: 1 }}>Member</span>
-              <span style={{ width: "200px", textAlign: "center" }}>Payment Class</span>
+              <span style={{ width: "180px", textAlign: "center" }}>Payment Class</span>
               <span style={{ width: "100px", textAlign: "center" }}>Role</span>
+              {isAdmin && <span style={{ width: "140px", textAlign: "center" }}>Actions</span>}
             </div>
 
             {/* Members List */}
@@ -525,6 +708,41 @@ export default function OrganizationPage() {
                   >
                     {member.role}
                   </span>
+
+                  {/* Edit Role Button */}
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleRoleChange(
+                        member.membership_id,
+                        member.full_name || "Member",
+                        member.role
+                      )}
+                      style={{
+                        padding: "0.5rem 0.875rem",
+                        borderRadius: "8px",
+                        border: "1px solid #e2e8f0",
+                        backgroundColor: "white",
+                        cursor: "pointer",
+                        fontSize: "0.75rem",
+                        fontWeight: 500,
+                        color: "#64748b",
+                        transition: "all 0.2s",
+                        minWidth: "100px"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#f8fafc";
+                        e.currentTarget.style.borderColor = "#448bfc";
+                        e.currentTarget.style.color = "#448bfc";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "white";
+                        e.currentTarget.style.borderColor = "#e2e8f0";
+                        e.currentTarget.style.color = "#64748b";
+                      }}
+                    >
+                      Edit Role
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

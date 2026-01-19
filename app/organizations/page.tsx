@@ -77,6 +77,16 @@ export default function OrganizationsPage() {
     fetchOrganizations();
   }, [supabase, router]);
 
+  // Helper function to get org initials
+  const getOrgInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   if (loading) {
     return <p style={{ padding: "2rem" }}>Loading organizations...</p>;
   }
@@ -158,25 +168,15 @@ export default function OrganizationsPage() {
             <div style={{
               width: "64px",
               height: "64px",
-              backgroundColor: "white",
+              backgroundColor: "#eff6ff",
               borderRadius: "12px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               margin: "0 auto 1.5rem",
-              border: "1px solid #e2e8f0",
-              overflow: "hidden"
+              fontSize: "2rem"
             }}>
-              <img 
-                src="/media/guild-logo.png" 
-                alt="Guild Logo"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  padding: "8px"
-                }}
-              />
+              🏢
             </div>
             <p style={{ 
               color: "#64748b",
@@ -242,28 +242,22 @@ export default function OrganizationsPage() {
                   {org.role}
                 </span>
 
+                {/* Organization Icon/Logo - Using Initials */}
                 <div style={{
                   width: "48px",
                   height: "48px",
-                  backgroundColor: "white",
+                  backgroundColor: "#eff6ff",
                   borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: "1rem",
                   border: "1px solid #e2e8f0",
-                  overflow: "hidden"
+                  fontSize: "1.25rem",
+                  fontWeight: 700,
+                  color: "#448bfc"
                 }}>
-                  <img 
-                    src="/media/guild-logo.png" 
-                    alt={org.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      padding: "4px"
-                    }}
-                  />
+                  {getOrgInitials(org.name)}
                 </div>
 
                 <h3 style={{ 
