@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-// Added HandCoins for the Fundraising icon
-import { Users, Settings, DollarSign, Calendar, HandCoins } from "lucide-react"; 
+import { Users, Settings, DollarSign, Calendar, Megaphone, Car, HandCoins } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type AdminSidebarProps = {
@@ -74,6 +73,18 @@ export default function AdminSidebar({
       adminOnly: true,
     },
     // ------------------------------
+    {
+      title: "Announcements",
+      icon: Megaphone,
+      path: `/organizations/${organizationId}/announcements`,
+      adminOnly: false,
+    },
+    {
+      title: "Chariot",
+      icon: Car,
+      path: `/organizations/${organizationId}/chariot`,
+      adminOnly: false,
+    },
     {
       title: "Settings",
       icon: Settings,
