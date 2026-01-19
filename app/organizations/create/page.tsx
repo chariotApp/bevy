@@ -30,6 +30,8 @@ export default function CreateOrganizationPage() {
       return;
     }
 
+    console.log("Creating organization for user:", user.id);
+
     // 1️⃣ Create organization
     const { data: org, error: orgError } = await supabase
       .from("organizations")
@@ -37,12 +39,27 @@ export default function CreateOrganizationPage() {
       .select()
       .single();
 
-    if (orgError || !org) {
-      console.error(orgError);
-      alert("Failed to create organization");
+    console.log("Organization creation result:", { org, orgError });
+
+    if (orgError) {
+      console.error("Full error details:", {
+        message: orgError.message,
+        details: orgError.details,
+        hint: orgError.hint,
+        code: orgError.code,
+      });
+      alert(`Failed to create organization: ${orgError.message}`);
       setLoading(false);
       return;
     }
+
+    if (!org) {
+      alert("Failed to create organization: No data returned");
+      setLoading(false);
+      return;
+    }
+
+    console.log("Organization created successfully:", org);
 
     // 2️⃣ Add creator as admin
     const { error: memberError } = await supabase
@@ -53,13 +70,21 @@ export default function CreateOrganizationPage() {
         role: "admin",
       });
 
+    console.log("Membership creation result:", { memberError });
+
     if (memberError) {
-      console.error(memberError);
-      alert("Organization created, but failed to assign role");
+      console.error("Membership error details:", {
+        message: memberError.message,
+        details: memberError.details,
+        hint: memberError.hint,
+        code: memberError.code,
+      });
+      alert(`Organization created, but failed to assign role: ${memberError.message}`);
       setLoading(false);
       return;
     }
 
+    console.log("Success! Redirecting to organizations page");
     // Success
     router.push("/organizations");
   };

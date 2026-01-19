@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 import Image from "next/image";
-import logo from "../Public/guild.png";
-import profileIcon from "../Public/profile.png";
+import logo from "../public/guild.png";
+import profileIcon from "../public/profile.png";
 
 type Org = {
   id: string;
