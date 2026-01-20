@@ -84,6 +84,32 @@ export default function CreateOrganizationPage() {
       return;
     }
 
+    // 3️⃣ Create default payment class for general members
+    const { error: paymentClassError } = await supabase
+      .from("organization_payment_classes")
+      .insert({
+        organization_id: org.id,
+        class_name: "general_member",
+        display_name: "General Member",
+        dues_amount: 0.00,
+        billing_frequency: "semester",
+        is_active: true,
+      });
+
+    console.log("Payment class creation result:", { paymentClassError });
+
+    if (paymentClassError) {
+      console.error("Payment class error details:", {
+        message: paymentClassError.message,
+        details: paymentClassError.details,
+        hint: paymentClassError.hint,
+        code: paymentClassError.code,
+      });
+      alert(`Organization created, but failed to create payment class: ${paymentClassError.message}`);
+      setLoading(false);
+      return;
+    }
+
     console.log("Success! Redirecting to organizations page");
     // Success
     router.push("/organizations");
