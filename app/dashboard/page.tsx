@@ -111,7 +111,7 @@ export default function WelcomePage() {
           }}>
             <Sparkles style={{ width: "16px", height: "16px" }} />
             <span style={{ fontSize: "0.875rem", fontWeight: 500 }}>
-              Welcome to Bevy
+              Welcome to Guild
             </span>
           </div>
 
@@ -142,7 +142,7 @@ export default function WelcomePage() {
             lineHeight: "1.8",
             marginBottom: "3rem"
           }}>
-            Welcome to <span style={{ fontWeight: 700, color: "#1e293b" }}>Bevy</span>, your all-in-one platform for managing clubs and organizations. Track payments, manage members, and keep your club running smoothly—all in one place.
+            Welcome to <span style={{ fontWeight: 700, color: "#1e293b" }}>Guild</span>, your all-in-one platform for managing clubs and organizations. Track payments, manage members, and keep your club running smoothly—all in one place.
           </p>
 
           {/* Stats Grid */}

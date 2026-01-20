@@ -32,7 +32,7 @@ export default function LoginPage() {
         {/* Bevy Logo */}
         <div className="text-center mb-8">
           <h1 className="text-6xl font-extrabold text-white mb-2 tracking-tight">
-            Bevy
+            Guild
           </h1>
           <div className="h-2 bg-gradient-to-r from-[#60a5fa] to-[#93c5fd] rounded-full w-32 mx-auto"></div>
         </div>

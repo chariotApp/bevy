@@ -62,11 +62,11 @@ export default function Home() {
             </div>
             
             <p className="text-2xl lg:text-3xl text-white font-light max-w-3xl mx-auto leading-relaxed">
-              The all-in-one financial platform for fraternities, sororities, and student organizations
+              An all-in-one membership management platform for modern organizations
             </p>
             
             <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-              Collect dues, manage members, run fundraisers, and track finances—all in one beautiful dashboard
+              Collect dues, manage members, run fundraisers, and track finances-all in one beautiful dashboard
             </p>
             
             <div className="flex gap-4 justify-center pt-6 flex-wrap">
@@ -122,7 +122,7 @@ export default function Home() {
               Everything your organization needs
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Purpose-built for Greek life and student organizations, with features designed to save you hours every week
+              Purpose-built for communities and organizations, with features designed to save you hours every week
             </p>
           </div>
 
