@@ -29,6 +29,7 @@ export default function SignupPage() {
       password,
       options: {
         data: {
+          emailRedirectTo: `http://bevy-xi.vercel.app/auth/callback`,
           full_name: name,
           phone_number: phone,
           birthdate,
