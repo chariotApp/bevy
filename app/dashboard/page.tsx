@@ -36,7 +36,8 @@ export default function WelcomePage() {
     return (
       <div style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)",
+        background: "#ffffff",
+        // linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%)
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
