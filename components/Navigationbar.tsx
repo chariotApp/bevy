@@ -114,7 +114,7 @@ export default function Navigationbar() {
           onClick={() => router.push("/dashboard")}
           style={{ padding: "0.5rem 1rem", cursor: "pointer", fontWeight: 500 }}
         >
-          Home
+          Dashboard
         </button>
 
         {/* Organizations */}
