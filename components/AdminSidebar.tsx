@@ -107,13 +107,6 @@ export default function AdminSidebar({
       premiumOnly: true
     },
     {
-      title: "Arthur",
-      icon: Bot,
-      path: `/organizations/${organizationId}/arthur`,
-      adminOnly: true,
-      premiumOnly: true
-    },
-    {
       title: "Settings",
       icon: Settings,
       path: `/organizations/${organizationId}/settings`,
@@ -241,6 +234,75 @@ export default function AdminSidebar({
         </div>
 
         <div style={{ flex: 1 }} />
+
+        {isAdmin && (
+          <button
+            title={!isPremium ? "Arthur (Premium Feature)" : "Arthur"}
+            onClick={() => {
+              if (!isPremium) {
+                setShowUpgradeModal(true);
+              } else {
+                router.push(`/organizations/${organizationId}/arthur`);
+              }
+            }}
+            style={{
+              width: "100%",
+              height: "40px",
+              borderRadius: "12px",
+              background: "none",
+              border: "none",
+              cursor: !isPremium ? "not-allowed" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: hovered ? "flex-start" : "center",
+              gap: hovered ? "0.75rem" : "0",
+              paddingLeft: hovered ? "0.75rem" : "0",
+              color: !isPremium ? "#9ca3af" : "#000000",
+              transition: "background-color 0.2s ease",
+              marginBottom: "0.5rem",
+              opacity: !isPremium ? 0.6 : 1,
+              position: "relative",
+            }}
+            onMouseEnter={(e) => {
+              if (!isPremium) {
+                e.currentTarget.style.backgroundColor = "#fef3c7";
+              } else {
+                e.currentTarget.style.backgroundColor = "#f3f4f6";
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
+          >
+            <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+              <Bot size={20} strokeWidth={2} />
+              {!isPremium && !hovered && (
+                <Lock
+                  size={12}
+                  style={{
+                    position: "absolute",
+                    bottom: -2,
+                    right: -2,
+                    color: "#f59e0b"
+                  }}
+                />
+              )}
+            </div>
+            {hovered && (
+              <span style={{
+                fontWeight: 500,
+                whiteSpace: "nowrap",
+                fontSize: "0.875rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem"
+              }}>
+                Arthur
+                {!isPremium && <Lock size={14} color="#f59e0b" />}
+              </span>
+            )}
+          </button>
+        )}
 
         {!isPremium && (
           <button
