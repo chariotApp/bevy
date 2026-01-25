@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Bot, Send, User, Sparkles } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Message = {
   id: string;
@@ -316,8 +318,11 @@ export default function ArthurPage() {
                     lineHeight: "1.6",
                     fontSize: "0.95rem",
                   }}
+                  className="markdown-content"
                 >
-                  {message.content}
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {message.content}
+                  </ReactMarkdown>
                 </div>
                 <span
                   style={{
@@ -499,7 +504,7 @@ export default function ArthurPage() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style jsx global>{`
         @keyframes typing {
           0%,
           60%,
@@ -515,6 +520,55 @@ export default function ArthurPage() {
 
         div:focus-within {
           outline: none;
+        }
+
+        .markdown-content h3 {
+          font-size: 1rem;
+          font-weight: 600;
+          margin: 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .markdown-content table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 0.75rem 0;
+          font-size: 0.9rem;
+        }
+
+        .markdown-content table th,
+        .markdown-content table td {
+          padding: 0.5rem 0.75rem;
+          text-align: left;
+          border: 1px solid #e5e7eb;
+        }
+
+        .markdown-content table th {
+          background-color: #f9fafb;
+          font-weight: 600;
+          color: #374151;
+        }
+
+        .markdown-content table td {
+          background-color: #ffffff;
+        }
+
+        .markdown-content table tr:hover td {
+          background-color: #f9fafb;
+        }
+
+        .markdown-content p {
+          margin: 0.5rem 0;
+        }
+
+        .markdown-content p:first-child {
+          margin-top: 0;
+        }
+
+        .markdown-content p:last-child {
+          margin-bottom: 0;
         }
       `}</style>
     </div>
